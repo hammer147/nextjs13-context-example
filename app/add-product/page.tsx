@@ -1,18 +1,23 @@
 'use client'
 
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { ProductContext } from '../../context/product/product-context'
 
 const AddProductPage = () => {
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
 
+  const nameInputRef = useRef<HTMLInputElement>(null)
+
   const { addProduct } = useContext(ProductContext)
+
+  useEffect(() => nameInputRef.current?.focus(),[])
 
   const handleAddProduct = () => {
     addProduct({ name, price })
     setName('')
     setPrice(0)
+    nameInputRef.current?.focus()
   }
 
   return (
@@ -20,6 +25,7 @@ const AddProductPage = () => {
       <div>
         <label className='p-2 m-2'>Name</label>
         <input
+          ref={nameInputRef}
           className='border-2'
           type='text'
           value={name}
